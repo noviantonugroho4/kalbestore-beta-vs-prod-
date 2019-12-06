@@ -94,7 +94,7 @@ module.exports = {
             browser.expect.element("//form[@id='checkoutV2Form']/div/div/div[2]").text.to.endWith('83.000');
             browser.click("//button[@type = 'submit' and @class = 'btn-bottom']")
             .pause(2000)
-            .assert.urlContains("https://betakalbestore.karyahastadinamika.com/checkout/onepage/success/")
+            .assert.urlContains("https://betakalbestore.karyahastadinamika.com/checkout/guest/process/")
             .waitForElementPresent("//button[@type='button']", 'Lanjut Belanja')
             .click("//button[@type='button']")
             .saveScreenshot('tests_output/screenshoot.png')

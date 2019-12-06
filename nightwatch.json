@@ -14,8 +14,9 @@
           "browserName" : "chrome",
         "javascriptEnabled" : true,
         "acceptSslCerts" : true,
+        "elementScrollBehavior": 1,
         "chromeOptions": {
-            "args": ["headless", "disable-gpu", "no-sandbox"]
+            "args": ["window-size=1280,800", "headless", "disable-gpu", "no-sandbox"]
         }}
       }
     }

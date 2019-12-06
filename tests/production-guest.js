@@ -1,5 +1,5 @@
 module.exports = {
-    '@tags': ['production'],
+    '@tags': ['production-guest'],
     'Test Kalbestore.com (DESKTOP-PRODUCTION)'(browser){
      
         const search = 'input[name="q"]';
@@ -19,9 +19,9 @@ module.exports = {
 //POP-UP
     browser
         .useXpath()
-            .assert.elementPresent("//*[@src = 'https://www.kalbestore.com/media/mbimages/p/o/pop-up-ovo-nov-w4.png']", 'pop-up')
-            .assert.elementPresent("//*[@src = 'https://www.kalbestore.com/media/mbimages/p/o/pop-up-ovo-nov-w4.png']", 'close x')
-            .click("//a[@href = '#' and (text() = 'close x' or . = 'close x')]");
+            .assert.elementPresent("//div[@id='content-popup']/a/img", 'pop-up')
+            .assert.elementPresent("//div[@id='pop-up-klb']/a", 'close x')
+            .click("//div[@id='pop-up-klb']/a");
 //Home Page
     browser
         .useXpath()
@@ -98,7 +98,7 @@ module.exports = {
             .assert.urlContains("https://www.kalbestore.com/checkout/onepage/success/")
             .waitForElementPresent("//button[@type='button']", 'Lanjut Belanja')
             .click("//button[@type='button']")
-            .saveScreenshot('tests_output/screenshoot.png')
+            .saveScreenshot('tests_output/production-user.png')
             .end();
  }
 }
