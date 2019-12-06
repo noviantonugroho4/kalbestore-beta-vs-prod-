@@ -17,8 +17,9 @@ module.exports = {
         const Uname = 'nugi';
         const Pword = 'admin123';
         var text;
+        var additional = ',00';
         var no_va;
-        var grnd_ttl;
+        var text1;
                 
     browser
          .url('https://jkalbestore.karyahastadinamika.com/')
@@ -93,7 +94,8 @@ module.exports = {
             browser.assert.elementPresent("//div[@class = 'grandtotal-left']", 'Total Pembayaran');
             browser.expect.element("//form[@id='checkoutV2Form']/div/div/div[2]").text.to.endWith('83.000');
             browser.getText('css selector', '#checkoutV2Form > div > div.grandtotal-wrapper.grandtotal-bottom > div.grandtotal-right', function(result) {
-                grnd_ttl = result.value;
+                text1 = result.value;
+                var grnd_ttl = text1.replace(text1, text1+additional);
                 console.log(grnd_ttl);
             browser.assert.elementPresent("//form[@id='checkoutV2Form']/div/div/div[4]/div", 'Total Pembayaran');
             //browser.expect.element("//form[@id='checkoutV2Form']/div/div/div[4]/div[2]").text.to.equal('150 Poin'); Depen product
@@ -113,13 +115,13 @@ module.exports = {
 // Magento
     browser        
             .url('https://jkalbestore.karyahastadinamika.com/parker/')
+            .pause(2000)
             .assert.urlContains('https://jkalbestore.karyahastadinamika.com/parker/', 'login page')
             .waitForElementPresent("//input[@type = 'text' and @id = 'username' and @name = 'login[username]']");
     browser
             .setValue("//input[@type = 'text' and @id = 'username' and @name = 'login[username]']", Uname);
             browser
             .setValue("//input[@type = 'password' and @id = 'login' and @name = 'login[password]']", [Pword, browser.Keys.ENTER])
-            .click("//input[@type = 'submit' and @class = 'form-button' and @title = 'Login']")
             .pause(2000)
             .assert.urlContains('https://jkalbestore.karyahastadinamika.com/index.php/parker/dashboard/', 'home page')
             .moveToElement("//a[@onclick='return false']", 10, 10)
@@ -128,17 +130,20 @@ module.exports = {
             .waitForElementPresent("//div[@id='page:main-container']/div[2]/table/tbody/tr/td/h3", 'order page')
             .waitForElementPresent("//input[@type = 'text' and @name = 'real_order_id' and @id = 'sales_order_grid_filter_real_order_id']")
             .setValue("//input[@type = 'text' and @name = 'real_order_id' and @id = 'sales_order_grid_filter_real_order_id']", [ret, browser.Keys.ENTER])
-            .pause(1000)
+            .pause(3000)
             .waitForElementPresent("/html/body/div[1]/div[5]/div/div[3]/div/div[2]/div/table/tbody/tr/td[2]", 'order Node.')
             browser.expect.element("/html/body/div[1]/div[5]/div/div[3]/div/div[2]/div/table/tbody/tr/td[2]").text.to.equal(ret);
-            browser.waitForElementVisible("//*[@id='sales_order_grid_table']/tbody/tr/td[12]/a", 'view detail order')
-            .click("//*[@id='sales_order_grid_table']/tbody/tr/td[12]/a")
+            browser.saveScreenshot('tests_output/prod-user-magento.png');
+            browser.moveToElement("/html/body/div[1]/div[5]/div/div[3]/div/div[2]/div/table/tbody/tr/td[2]", 10, 10)
+            .click("/html/body/div[1]/div[5]/div/div[3]/div/div[2]/div/table/tbody/tr/td[2]")
             .pause(1000)
+            .waitForElementPresent("//*[@id='loading_mask_loader']")
+            .pause(2000)
             .assert.urlContains('https://jkalbestore.karyahastadinamika.com/index.php/parker/sales_order/view/order_id/')
             .waitForElementPresent("//div[@id='sales_order_view_tabs_order_info_content']/div/div[8]/div/fieldset/table/tbody/tr/td[2]/strong", 'No. Virtual Account');
             browser.expect.element("//div[@id='sales_order_view_tabs_order_info_content']/div/div[8]/div/fieldset/table/tbody/tr/td[2]/strong").text.to.equal(no_va);
-            browser.assert.elementPresent("//div[@id='sales_order_view_tabs_order_info_content']/div/div[16]/div[2]/table/tfoot/tr/td[2]/strong/span", 'Grand Total')
-            browser.expect.element("//div[@id='sales_order_view_tabs_order_info_content']/div/div[8]/div/fieldset/table/tbody/tr/td[2]/strong").text.to.equal(grnd_ttl);
+            browser.assert.elementPresent("//div[@id='sales_order_view_tabs_order_info_content']/div/div[16]/div[2]/table/tfoot/tr/td[2]/strong/span", 'Grand Total');
+            browser.expect.element("//div[@id='sales_order_view_tabs_order_info_content']/div/div[16]/div[2]/table/tfoot/tr/td[2]/strong/span").text.to.equal(grnd_ttl);
             });});});
             browser.saveScreenshot('tests_output/prod-user-magento.png')
             .end();
